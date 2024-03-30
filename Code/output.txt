@@ -1,0 +1,40 @@
+.data
+_prompt: .asciiz "Enter an integer:"
+_ret: .asciiz "\n"
+.globl main
+.text
+read:
+  li $v0, 4
+  la $a0, _prompt
+  syscall
+  li $v0, 5
+  syscall
+  jr $ra
+
+write:
+  li $v0, 1
+  syscall
+  li $v0, 4
+  la $a0, _ret
+  syscall
+  move $v0, $0
+  jr $ra
+
+main:
+  sw $ra, -4($sp)
+  sw $fp, -8($sp)
+  move $fp, $sp
+  addi $sp $sp -16
+# FUNCTION main :
+  li $t0, 5
+  sw $t0, -12($fp)
+# v0 := #5
+  li $t0, 3
+  sw $t0, -16($fp)
+# t0 := #3
+  lw $v0, -16($fp)
+  lw $ra, -4($fp)
+  move $sp, $fp
+  lw $fp, -8($fp)
+  jr $ra
+# RETURN t0
